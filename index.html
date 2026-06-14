@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1db954" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Wavify" />
+  <title>Wavify</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-logo">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="32" fill="#1db954"/>
+      <rect x="14" y="26" width="6" height="12" rx="3" fill="#0a0a0a"/>
+      <rect x="24" y="18" width="6" height="28" rx="3" fill="#0a0a0a"/>
+      <rect x="34" y="22" width="6" height="20" rx="3" fill="#0a0a0a"/>
+      <rect x="44" y="28" width="6" height="8"  rx="3" fill="#0a0a0a"/>
+    </svg>
+    <span class="splash-name">Wavify</span>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app" class="hidden">
+
+  <!-- PAGES -->
+  <main id="pages">
+
+    <!-- HOME -->
+    <section id="page-home" class="page active">
+      <div class="page-scroll">
+        <header class="page-header">
+          <div class="greeting" id="greeting">Good evening</div>
+          <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+            <svg viewBox="0 0 24 24"><path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2zm6-6V11a6 6 0 0 0-5-5.91V4a1 1 0 0 0-2 0v1.09A6 6 0 0 0 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          </button>
+        </header>
+
+        <div class="quick-grid" id="quick-grid"></div>
+
+        <section class="home-section">
+          <div class="section-header"><h2>Recently Played</h2></div>
+          <div class="h-scroll" id="recently-played"></div>
+        </section>
+
+        <section class="home-section">
+          <div class="section-header"><h2>Continue Listening</h2></div>
+          <div class="h-scroll" id="continue-listening"></div>
+        </section>
+
+        <section class="home-section">
+          <div class="section-header"><h2>Recommended</h2></div>
+          <div class="h-scroll" id="recommended"></div>
+        </section>
+
+        <section class="home-section">
+          <div class="section-header"><h2>Trending</h2></div>
+          <div class="h-scroll" id="trending"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section id="page-search" class="page">
+      <div class="page-scroll">
+        <header class="page-header">
+          <h1 class="page-title">Search</h1>
+        </header>
+        <div class="search-wrap">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            <input type="text" id="search-input" placeholder="Artists, songs, or videos…" autocomplete="off" />
+            <button id="search-clear" class="search-clear hidden" aria-label="Clear">✕</button>
+          </div>
+        </div>
+
+        <div id="search-recent" class="search-recent">
+          <h3>Recent Searches</h3>
+          <ul id="recent-list"></ul>
+        </div>
+
+        <div id="search-results" class="hidden">
+          <div class="results-grid" id="results-grid"></div>
+        </div>
+
+        <div id="search-categories">
+          <h3>Browse</h3>
+          <div class="cat-grid" id="cat-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRARY -->
+    <section id="page-library" class="page">
+      <div class="page-scroll">
+        <header class="page-header">
+          <h1 class="page-title">Library</h1>
+          <div class="view-toggle">
+            <button class="icon-btn active" id="grid-btn" aria-label="Grid view">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </button>
+            <button class="icon-btn" id="list-btn" aria-label="List view">
+              <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2"/><line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="audio">Audio</button>
+          <button class="filter-btn" data-filter="video">Video</button>
+        </div>
+
+        <div class="sort-row">
+          <select id="lib-sort" class="sort-select">
+            <option value="recent">Recent</option>
+            <option value="az">A–Z</option>
+            <option value="played">Recently Played</option>
+          </select>
+        </div>
+
+        <div id="lib-grid" class="lib-grid"></div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section id="page-video" class="page">
+      <div class="page-scroll">
+        <header class="page-header">
+          <h1 class="page-title">Videos</h1>
+        </header>
+        <div class="search-wrap">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            <input type="text" id="video-search" placeholder="Search videos…" autocomplete="off" />
+          </div>
+        </div>
+
+        <section class="home-section">
+          <div class="section-header"><h2>Recent Videos</h2></div>
+          <div class="h-scroll" id="recent-videos"></div>
+        </section>
+
+        <section class="home-section">
+          <div class="section-header"><h2>All Videos</h2></div>
+          <div class="video-grid" id="video-grid"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- AUDIO -->
+    <section id="page-audio" class="page">
+      <div class="page-scroll">
+        <header class="page-header">
+          <h1 class="page-title">Audio</h1>
+        </header>
+
+        <div class="filter-row">
+          <button class="audio-tab active" data-tab="all-audio">All</button>
+          <button class="audio-tab" data-tab="favorites">Favourites</button>
+          <button class="audio-tab" data-tab="most-played">Most Played</button>
+          <button class="audio-tab" data-tab="artists">Artists</button>
+        </div>
+
+        <div id="all-audio" class="audio-tab-content active">
+          <div class="track-list" id="all-tracks"></div>
+        </div>
+        <div id="favorites" class="audio-tab-content">
+          <div class="track-list" id="fav-tracks"></div>
+        </div>
+        <div id="most-played" class="audio-tab-content">
+          <div class="track-list" id="most-tracks"></div>
+        </div>
+        <div id="artists" class="audio-tab-content">
+          <div class="artist-grid" id="artist-grid"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MINI PLAYER -->
+  <div id="mini-player" class="hidden">
+    <div class="mini-cover-wrap" id="mini-cover-wrap">
+      <img id="mini-cover" src="" alt="" />
+      <div class="mini-wave">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="mini-info">
+      <div class="mini-title" id="mini-title">—</div>
+      <div class="mini-artist" id="mini-artist">—</div>
+    </div>
+    <div class="mini-controls">
+      <button class="icon-btn" id="mini-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><polygon points="19,20 9,12 19,4"/><line x1="5" y1="4" x2="5" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <button class="icon-btn play-btn" id="mini-play" aria-label="Play/Pause">
+        <svg id="mini-play-icon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+      </button>
+      <button class="icon-btn" id="mini-next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><polygon points="5,4 15,12 5,20"/><line x1="19" y1="4" x2="19" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+    </div>
+    <div class="mini-progress">
+      <div class="mini-bar" id="mini-bar"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-page="home">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 21V12h6v9"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" data-page="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>Search</span>
+    </button>
+    <button class="nav-btn" data-page="library">
+      <svg viewBox="0 0 24 24"><path d="M3 5h18M3 10h18M3 15h12M3 20h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+      <span>Library</span>
+    </button>
+    <button class="nav-btn" data-page="video">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="15" height="16" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><polygon points="22,8 17,12 22,16" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+      <span>Video</span>
+    </button>
+    <button class="nav-btn" data-page="audio">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+      <span>Audio</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- FULL PLAYER OVERLAY -->
+<div id="full-player" class="hidden">
+  <div class="fp-bg" id="fp-bg"></div>
+  <div class="fp-blur"></div>
+
+  <div class="fp-inner">
+    <div class="fp-top">
+      <button class="icon-btn fp-down" id="fp-close" aria-label="Minimise">
+        <svg viewBox="0 0 24 24"><polyline points="6,9 12,15 18,9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </button>
+      <span class="fp-label" id="fp-label">Now Playing</span>
+      <button class="icon-btn" id="fp-fav" aria-label="Favourite">
+        <svg id="fp-fav-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+      </button>
+    </div>
+
+    <!-- AUDIO VIEW -->
+    <div id="fp-audio-view">
+      <div class="fp-cover-wrap">
+        <img id="fp-cover" src="" alt="" />
+      </div>
+      <div class="fp-meta">
+        <div class="fp-title" id="fp-title">—</div>
+        <div class="fp-artist" id="fp-artist">—</div>
+      </div>
+    </div>
+
+    <!-- VIDEO VIEW -->
+    <div id="fp-video-view" class="hidden">
+      <div class="fp-video-wrap">
+        <video id="fp-video" playsinline></video>
+      </div>
+      <div class="fp-meta">
+        <div class="fp-title" id="fp-vtitle">—</div>
+        <div class="fp-artist" id="fp-vartist">—</div>
+      </div>
+    </div>
+
+    <div class="fp-progress-wrap">
+      <input type="range" id="fp-seek" class="fp-seek" value="0" min="0" max="100" step="0.1" />
+      <div class="fp-times">
+        <span id="fp-cur">0:00</span>
+        <span id="fp-dur">0:00</span>
+      </div>
+    </div>
+
+    <div class="fp-controls">
+      <button class="icon-btn sm" id="fp-shuffle" aria-label="Shuffle">
+        <svg viewBox="0 0 24 24"><polyline points="16,3 21,3 21,8" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="4" y1="20" x2="21" y2="3" stroke="currentColor" stroke-width="1.8"/><polyline points="21,16 21,21 16,21" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="15" y1="15" x2="21" y2="21" stroke="currentColor" stroke-width="1.8"/><line x1="4" y1="4" x2="9" y2="9" stroke="currentColor" stroke-width="1.8"/></svg>
+      </button>
+      <button class="icon-btn md" id="fp-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24"><polygon points="19,20 9,12 19,4" fill="currentColor"/><line x1="5" y1="4" x2="5" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <button class="icon-btn lg play-btn" id="fp-play" aria-label="Play/Pause">
+        <svg id="fp-play-icon" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+      </button>
+      <button class="icon-btn md" id="fp-next" aria-label="Next">
+        <svg viewBox="0 0 24 24"><polygon points="5,4 15,12 5,20" fill="currentColor"/><line x1="19" y1="4" x2="19" y2="20" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <button class="icon-btn sm" id="fp-repeat" aria-label="Repeat">
+        <svg viewBox="0 0 24 24"><polyline points="17,1 21,5 17,9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M3 11V9a4 4 0 0 1 4-4h14" stroke="currentColor" stroke-width="1.8" fill="none"/><polyline points="7,23 3,19 7,15" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M21 13v2a4 4 0 0 1-4 4H3" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+      </button>
+    </div>
+
+    <div class="fp-extra">
+      <div class="fp-vol-wrap">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+        <input type="range" id="fp-vol" class="fp-vol" value="100" min="0" max="100" />
+      </div>
+      <div class="fp-speed-wrap">
+        <button class="speed-btn" id="fp-speed">1×</button>
+      </div>
+      <div class="fp-actions">
+        <button class="icon-btn sm" id="fp-pip" aria-label="Picture in Picture" style="display:none">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><rect x="12" y="13" width="8" height="5" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        </button>
+        <button class="icon-btn sm" id="fp-fullscreen" aria-label="Fullscreen" style="display:none">
+          <svg viewBox="0 0 24 24"><polyline points="15,3 21,3 21,9" stroke="currentColor" stroke-width="1.8" fill="none"/><polyline points="9,21 3,21 3,15" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="21" y1="3" x2="14" y2="10" stroke="currentColor" stroke-width="1.8"/><line x1="3" y1="21" x2="10" y2="14" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SKIP BUTTONS -->
+    <div class="fp-skip">
+      <button class="skip-btn" id="fp-back10">
+        <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 5V1L7 6l5 5V7a7 7 0 1 1-7 7h-2a9 9 0 1 0 9-9z" fill="currentColor"/><text x="7" y="17" font-size="5" fill="currentColor">10</text></svg>
+      </button>
+      <button class="skip-btn" id="fp-fwd10">
+        <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 5V1l5 5-5 5V7a7 7 0 1 0 7 7h2a9 9 0 1 1-9-9z" fill="currentColor"/><text x="7" y="17" font-size="5" fill="currentColor">10</text></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN AUDIO ELEMENT -->
+<audio id="main-audio"></audio>
+
+<script src="./script.js"></script>
+</body>
+</html>
