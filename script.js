@@ -17,11 +17,11 @@ const MEDIA = [
     src: "./mp3/Kodak.mp3"
   },
   {
-    title: "Talha",
-    artist: "Talha Anjum",
+    title: "Bandish",
+    artist: "Talha",
     type: "audio",
-    cover: "./img/talha.jpg",
-    src: "./audio/talha.mp3"
+    cover: "./img/Bandish.jpg",
+    src: "./mp3/Bandish.mp3"
   },
   {
     title: "Song One",
@@ -39,11 +39,11 @@ const MEDIA = [
     src: "./mp4/Kodak.mp4"
   },
   {
-    title: "AUR – Official Video",
-    artist: "AUR",
-    type: "video",
-    cover: "./img/shikayat.jpg",
-    src: "./video/aur.mp4"
+    title: "Bandish",
+    artist: "Bandish",
+    type: "Bandish",
+    cover: "./img/Bandish.jpg",
+    src: "./video/Bandish.mp4"
   }
 ];
 
