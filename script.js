@@ -29,6 +29,13 @@ const MEDIA = [
     type: "audio",
     cover: "./img/Luka Chippi.jpg",
     src: "./mp3/Luka Chippi.mp3"
+  },
+   {
+    title: "Raat ki Rani",
+    artist: "Seedhe Maut",
+    type: "audio",
+    cover: "./img/Raat ki Rani.jpg",
+    src: "./mp3/Raat ki Rani.mp3"
   }
 ];
 
