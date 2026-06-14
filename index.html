@@ -7,7 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Wavify" />
+  <meta name="apple-mobile-web-app-title" content="1911" />
   <title>1911</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="stylesheet" href="./style.css" />
@@ -31,7 +31,6 @@
 <!-- APP SHELL -->
 <div id="app" class="hidden">
 
-  <!-- PAGES -->
   <main id="pages">
 
     <!-- HOME -->
@@ -77,7 +76,7 @@
         <div class="search-wrap">
           <div class="search-box">
             <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-            <input type="text" id="search-input" placeholder="Artists, songs, or videos…" autocomplete="off" />
+            <input type="text" id="search-input" placeholder="Artists, songs…" autocomplete="off" />
             <button id="search-clear" class="search-clear hidden" aria-label="Clear">✕</button>
           </div>
         </div>
@@ -98,69 +97,11 @@
       </div>
     </section>
 
-    <!-- LIBRARY -->
-    <section id="page-library" class="page">
+    <!-- SONGS -->
+    <section id="page-songs" class="page">
       <div class="page-scroll">
         <header class="page-header">
-          <h1 class="page-title">Library</h1>
-          <div class="view-toggle">
-            <button class="icon-btn active" id="grid-btn" aria-label="Grid view">
-              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-            </button>
-            <button class="icon-btn" id="list-btn" aria-label="List view">
-              <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2"/><line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2"/></svg>
-            </button>
-          </div>
-        </header>
-
-        <div class="filter-row">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="audio">Audio</button>
-          <button class="filter-btn" data-filter="video">Video</button>
-        </div>
-
-        <div class="sort-row">
-          <select id="lib-sort" class="sort-select">
-            <option value="recent">Recent</option>
-            <option value="az">A–Z</option>
-            <option value="played">Recently Played</option>
-          </select>
-        </div>
-
-        <div id="lib-grid" class="lib-grid"></div>
-      </div>
-    </section>
-
-    <!-- VIDEO -->
-    <section id="page-video" class="page">
-      <div class="page-scroll">
-        <header class="page-header">
-          <h1 class="page-title">Videos</h1>
-        </header>
-        <div class="search-wrap">
-          <div class="search-box">
-            <svg viewBox="0 0 24 24"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-            <input type="text" id="video-search" placeholder="Search videos…" autocomplete="off" />
-          </div>
-        </div>
-
-        <section class="home-section">
-          <div class="section-header"><h2>Recent Videos</h2></div>
-          <div class="h-scroll" id="recent-videos"></div>
-        </section>
-
-        <section class="home-section">
-          <div class="section-header"><h2>All Videos</h2></div>
-          <div class="video-grid" id="video-grid"></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- AUDIO -->
-    <section id="page-audio" class="page">
-      <div class="page-scroll">
-        <header class="page-header">
-          <h1 class="page-title">Audio</h1>
+          <h1 class="page-title">Songs</h1>
         </header>
 
         <div class="filter-row">
@@ -215,7 +156,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM NAV — 3 tabs only -->
   <nav id="bottom-nav">
     <button class="nav-btn active" data-page="home">
       <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 21V12h6v9"/></svg>
@@ -225,17 +166,9 @@
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>Search</span>
     </button>
-    <button class="nav-btn" data-page="library">
-      <svg viewBox="0 0 24 24"><path d="M3 5h18M3 10h18M3 15h12M3 20h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
-      <span>Library</span>
-    </button>
-    <button class="nav-btn" data-page="video">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="15" height="16" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><polygon points="22,8 17,12 22,16" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
-      <span>Video</span>
-    </button>
-    <button class="nav-btn" data-page="audio">
+    <button class="nav-btn" data-page="songs">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
-      <span>Audio</span>
+      <span>Songs</span>
     </button>
   </nav>
 
@@ -323,7 +256,6 @@
       </div>
     </div>
 
-    <!-- SKIP BUTTONS -->
     <div class="fp-skip">
       <button class="skip-btn" id="fp-back10">
         <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 5V1L7 6l5 5V7a7 7 0 1 1-7 7h-2a9 9 0 1 0 9-9z" fill="currentColor"/><text x="7" y="17" font-size="5" fill="currentColor">10</text></svg>
@@ -336,7 +268,7 @@
 </div>
 
 <!-- HIDDEN AUDIO ELEMENT -->
-<audio id="main-audio"></audio>
+<audio id="main-audio" style="display:none"></audio>
 
 <script src="./script.js"></script>
 </body>
