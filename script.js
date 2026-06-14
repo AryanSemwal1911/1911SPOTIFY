@@ -29,7 +29,23 @@ const MEDIA = [
     type: "audio",
     cover: "./img/Luka Chippi.jpg",
     src: "./mp3/Luka Chippi.mp3"
-  ];
+  },
+  // VIDEO examples
+{
+    title: "KODAK",
+    artist: "King",
+    type: "video",
+    cover: "./img/Kodak.jpg",
+    src: "./mp4/Kodak.mp4"
+  },
+{
+    title: "Bandish",
+    artist: "Talha",
+    type: "video",
+    cover: "./img/Bandish.jpg",
+    src: "./video/Bandish.mp4"
+  }
+];
 
 
 /* ─────────────────────────────────────────
