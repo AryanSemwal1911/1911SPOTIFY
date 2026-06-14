@@ -17,21 +17,21 @@ const MEDIA = [
     src: "./mp3/Kodak.mp3"
   },
   {
-    title: "Bandish",
-    artist: "Talha",
+    title: "BANDISH",
+    artist: "Talha Anjum",
     type: "audio",
     cover: "./img/Bandish.jpg",
     src: "./mp3/Bandish.mp3"
   },
   {
-    title: "Luka Chippi",
+    title: "LUKA CHIPPI",
     artist: "Seedhe Maut",
     type: "audio",
     cover: "./img/Luka Chippi.jpg",
     src: "./mp3/Luka Chippi.mp3"
   },
    {
-    title: "Raat ki Rani",
+    title: "RAAT KI RANI",
     artist: "Seedhe Maut",
     type: "audio",
     cover: "./img/Raat ki Rani.jpg",
@@ -39,11 +39,41 @@ const MEDIA = [
   },
      {
     title: "SHIKWA",
-    artist: "TALHA YUNUS",
+    artist: "Talha Yunus",
     type: "audio",
     cover: "./img/SHIKWA.jpg",
     src: "./mp3/SHIKWA.mp3"
+  },
+   {
+    title: "AFSANAY",
+    artist: "Young Stunners",
+    type: "audio",
+    cover: "./img/AFSANAY.jpg",
+    src: "./mp3/AFSANAY.mp3"
+  },
+     {
+    title: "JANI",
+    artist: "Young Stunners",
+    type: "audio",
+    cover: "./img/JANI.jpg",
+    src: "./mp3/JANI.mp3"
+  },
+     {
+    title: "LAGA REH",
+    artist: "Young Stunners",
+    type: "audio",
+    cover: "./img/LAGA REH.jpg",
+    src: "./mp3/LAGA REH.mp3"
+  },
+     {
+    title: "Phir Milenge",
+    artist: "COKE STUDIO",
+    type: "audio",
+    cover: "./img/Phir Milenge.jpg",
+    src: "./mp3/Phir Milenge.mp3"
   }
+   
+   
 ];
 
 /* ─────────────────────────────────────────
