@@ -96,6 +96,20 @@ html, body {
 .page-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
 .greeting   { font-size: 22px; font-weight: 700; }
 
+/* Home header logo row */
+#page-home .page-header {
+  flex-direction: column; align-items: flex-start; gap: 4px;
+}
+.home-header-top {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+}
+.home-logo-row { display: flex; align-items: center; gap: 8px; }
+.home-logo-name { font-size: 18px; font-weight: 900; letter-spacing: 2px; color: var(--accent); }
+
+/* Search page back button */
+#page-search .page-header { gap: 4px; }
+.search-back-btn { flex-shrink: 0; }
+
 /* ---------- Icon Buttons ---------- */
 .icon-btn {
   background: transparent; border: none; color: var(--text2);
