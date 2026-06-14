@@ -609,4 +609,10 @@ input[type=range] { --range-fill: 0%; }
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+
+audio {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
 }
