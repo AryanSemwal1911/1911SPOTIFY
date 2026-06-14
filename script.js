@@ -36,6 +36,13 @@ const MEDIA = [
     type: "audio",
     cover: "./img/Raat ki Rani.jpg",
     src: "./mp3/Raat ki Rani.mp3"
+  },
+     {
+    title: "SHIKWA",
+    artist: "TALHA YUNUS",
+    type: "audio",
+    cover: "./img/SHIKWA.jpg",
+    src: "./mp3/SHIKWA.mp3"
   }
 ];
 
