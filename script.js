@@ -1,15 +1,15 @@
+
 /* ============================================================
-   WAVIFY — script.js
+   1911 — script.js  (audio-only build)
    ============================================================ */
 
 'use strict';
 
 /* ─────────────────────────────────────────
-   MEDIA LIBRARY  ← Edit this array only
+   MEDIA LIBRARY  ← Sirf audio entries yahan add karo
    ───────────────────────────────────────── */
 const MEDIA = [
-  // AUDIO examples
-{
+  {
     title: "KODAK",
     artist: "King",
     type: "audio",
@@ -29,24 +29,8 @@ const MEDIA = [
     type: "audio",
     cover: "./img/Luka Chippi.jpg",
     src: "./mp3/Luka Chippi.mp3"
-  },
-  // VIDEO examples
-{
-    title: "KODAK",
-    artist: "King",
-    type: "video",
-    cover: "./img/Kodak.jpg",
-    src: "./mp4/Kodak.mp4"
-  },
-{
-    title: "Bandish",
-    artist: "Talha",
-    type: "video",
-    cover: "./img/Bandish.jpg",
-    src: "./video/Bandish.mp4"
   }
 ];
-
 
 /* ─────────────────────────────────────────
    STATE
@@ -57,14 +41,12 @@ const state = {
   shuffle: false,
   repeat: 'none',      // 'none' | 'all' | 'one'
   volume: 1,
-  muted: false,
   speed: 1,
   currentPage: 'home',
-  // Persisted via localStorage
-  recentlyPlayed: [],  // array of indices
-  favorites: [],       // array of indices
-  playCounts: {},      // index → count
-  savedPositions: {},  // index → seconds
+  recentlyPlayed: [],
+  favorites: [],
+  playCounts: {},
+  savedPositions: {},
   recentSearches: []
 };
 
@@ -75,7 +57,7 @@ const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
    ───────────────────────────────────────── */
 function loadState() {
   try {
-    const s = JSON.parse(localStorage.getItem('wavify') || '{}');
+    const s = JSON.parse(localStorage.getItem('1911') || '{}');
     state.recentlyPlayed = s.recentlyPlayed || [];
     state.favorites       = s.favorites       || [];
     state.playCounts      = s.playCounts      || {};
@@ -88,7 +70,7 @@ function loadState() {
 
 function saveState() {
   try {
-    localStorage.setItem('wavify', JSON.stringify({
+    localStorage.setItem('1911', JSON.stringify({
       recentlyPlayed: state.recentlyPlayed,
       favorites:      state.favorites,
       playCounts:     state.playCounts,
@@ -105,16 +87,15 @@ function saveState() {
    ───────────────────────────────────────── */
 const $ = id => document.getElementById(id);
 
-const audio       = $('main-audio');
-const video       = $('fp-video');
-const miniPlayer  = $('mini-player');
-const fullPlayer  = $('full-player');
-const fpBg        = $('fp-bg');
-const fpSeek      = $('fp-seek');
-const fpVol       = $('fp-vol');
-const fpCur       = $('fp-cur');
-const fpDur       = $('fp-dur');
-const miniBar     = $('mini-bar');
+const audio      = $('main-audio');
+const miniPlayer = $('mini-player');
+const fullPlayer = $('full-player');
+const fpBg       = $('fp-bg');
+const fpSeek     = $('fp-seek');
+const fpVol      = $('fp-vol');
+const fpCur      = $('fp-cur');
+const fpDur      = $('fp-dur');
+const miniBar    = $('mini-bar');
 
 /* ─────────────────────────────────────────
    UTILITIES
@@ -145,11 +126,6 @@ function toast(msg) {
   t._timer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-function placeholderBg(seed) {
-  const colors = ['#1e3a5f','#3d1a5f','#1a3d2e','#5f1a1a','#3d3d1a','#1a3d5f'];
-  return colors[seed % colors.length];
-}
-
 /* ─────────────────────────────────────────
    CARD / TRACK BUILDERS
    ───────────────────────────────────────── */
@@ -160,7 +136,6 @@ function buildCard(idx) {
   card.innerHTML = `
     <div class="card-cover">
       <img src="${m.cover}" alt="${m.title}" loading="lazy" />
-      <span class="card-type">${m.type === 'video' ? '▶ Video' : '♫ Audio'}</span>
       <div class="card-cover-play">
         <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="#000"/></svg>
       </div>
@@ -186,7 +161,7 @@ function buildTrackItem(idx) {
       <div class="track-artist">${m.artist}</div>
     </div>
     <button class="track-fav${isFav ? ' active' : ''}" aria-label="Favourite" data-idx="${idx}">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" ${isFav ? `fill="${getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()}"` : 'fill="none"'}/></svg>
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" ${isFav ? 'fill="#1db954"' : 'fill="none"'}/></svg>
     </button>`;
   li.querySelector('img').onerror = e => fallbackCover(e.target);
   li.addEventListener('click', e => {
@@ -196,24 +171,9 @@ function buildTrackItem(idx) {
   li.querySelector('.track-fav').addEventListener('click', (e) => {
     e.stopPropagation();
     toggleFav(idx);
-    renderAudioPage();
+    renderSongsPage();
   });
   return li;
-}
-
-function buildVideoCard(idx) {
-  const m = MEDIA[idx];
-  const div = document.createElement('div');
-  div.className = 'video-card';
-  div.innerHTML = `
-    <img class="video-thumb" src="${m.cover}" alt="${m.title}" loading="lazy" />
-    <div class="video-info">
-      <div class="video-title">${m.title}</div>
-      <div class="video-artist">${m.artist}</div>
-    </div>`;
-  div.querySelector('img').onerror = e => fallbackCover(e.target);
-  div.addEventListener('click', () => playMedia(idx));
-  return div;
 }
 
 function buildSkeletonCards(n) {
@@ -238,12 +198,8 @@ function playMedia(idx) {
   const m = MEDIA[idx];
 
   // Save position of previous
-  if (state.currentIndex >= 0) {
-    const prev = MEDIA[state.currentIndex];
-    const el = prev.type === 'video' ? video : audio;
-    if (!isNaN(el.currentTime)) {
-      state.savedPositions[state.currentIndex] = el.currentTime;
-    }
+  if (state.currentIndex >= 0 && !isNaN(audio.currentTime)) {
+    state.savedPositions[state.currentIndex] = audio.currentTime;
   }
 
   state.currentIndex = idx;
@@ -252,34 +208,14 @@ function playMedia(idx) {
   state.playCounts[idx] = (state.playCounts[idx] || 0) + 1;
   state.recentlyPlayed = [idx, ...state.recentlyPlayed.filter(i => i !== idx)].slice(0, 20);
 
-  if (m.type === 'video') {
-    // Pause audio
-    audio.pause();
-    audio.src = '';
-    video.src = m.src;
-    video.volume = state.muted ? 0 : state.volume;
-    video.playbackRate = state.speed;
-    const saved = state.savedPositions[idx] || 0;
-    video.addEventListener('loadedmetadata', () => {
-      if (saved > 0) video.currentTime = saved;
-    }, { once: true });
-    video.play().catch(() => {});
-    $('fp-pip').style.display = '';
-    $('fp-fullscreen').style.display = '';
-  } else {
-    video.pause();
-    video.src = '';
-    audio.src = m.src;
-    audio.volume = state.muted ? 0 : state.volume;
-    audio.playbackRate = state.speed;
-    const saved = state.savedPositions[idx] || 0;
-    audio.addEventListener('loadedmetadata', () => {
-      if (saved > 0) audio.currentTime = saved;
-    }, { once: true });
-    audio.play().catch(() => {});
-    $('fp-pip').style.display = 'none';
-    $('fp-fullscreen').style.display = 'none';
-  }
+  audio.src = m.src;
+  audio.volume = state.volume;
+  audio.playbackRate = state.speed;
+  const saved = state.savedPositions[idx] || 0;
+  audio.addEventListener('loadedmetadata', () => {
+    if (saved > 0) audio.currentTime = saved;
+  }, { once: true });
+  audio.play().catch(() => {});
 
   state.isPlaying = true;
   saveState();
@@ -287,19 +223,13 @@ function playMedia(idx) {
   openFullPlayer();
 }
 
-function currentMediaEl() {
-  if (state.currentIndex < 0) return null;
-  return MEDIA[state.currentIndex].type === 'video' ? video : audio;
-}
-
 function togglePlay() {
-  const el = currentMediaEl();
-  if (!el) return;
+  if (!audio) return;
   if (state.isPlaying) {
-    el.pause();
+    audio.pause();
     state.isPlaying = false;
   } else {
-    el.play().catch(() => {});
+    audio.play().catch(() => {});
     state.isPlaying = true;
   }
   updatePlayIcons();
@@ -319,8 +249,7 @@ function playNext() {
 }
 
 function playPrev() {
-  const el = currentMediaEl();
-  if (el && el.currentTime > 3) { el.currentTime = 0; return; }
+  if (audio.currentTime > 3) { audio.currentTime = 0; return; }
   const prev = (state.currentIndex - 1 + MEDIA.length) % MEDIA.length;
   playMedia(prev);
 }
@@ -347,32 +276,19 @@ function updateFavIcon() {
    UI UPDATES
    ───────────────────────────────────────── */
 function updatePlayerUI(m) {
-  // Mini player
   $('mini-cover').src = m.cover;
   $('mini-cover').onerror = e => fallbackCover(e.target);
   $('mini-title').textContent = m.title;
   $('mini-artist').textContent = m.artist;
   miniPlayer.classList.remove('hidden');
 
-  // Full player background
   fpBg.style.backgroundImage = `url(${m.cover})`;
+  $('fp-cover').src = m.cover;
+  $('fp-cover').onerror = e => fallbackCover(e.target);
+  $('fp-title').textContent = m.title;
+  $('fp-artist').textContent = m.artist;
+  $('fp-label').textContent = 'Now Playing';
 
-  // Swap audio/video views
-  const isVideo = m.type === 'video';
-  $('fp-audio-view').classList.toggle('hidden', isVideo);
-  $('fp-video-view').classList.toggle('hidden', !isVideo);
-
-  if (!isVideo) {
-    $('fp-cover').src = m.cover;
-    $('fp-cover').onerror = e => fallbackCover(e.target);
-    $('fp-title').textContent = m.title;
-    $('fp-artist').textContent = m.artist;
-  } else {
-    $('fp-vtitle').textContent = m.title;
-    $('fp-vartist').textContent = m.artist;
-  }
-
-  $('fp-label').textContent = isVideo ? 'Now Watching' : 'Now Playing';
   updatePlayIcons();
   updateFavIcon();
 }
@@ -381,19 +297,18 @@ function updatePlayIcons() {
   const playing = state.isPlaying;
   const pauseIcon = `<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>`;
   const playIcon  = `<polygon points="5,3 19,12 5,21" fill="currentColor"/>`;
-  $('fp-play-icon').innerHTML    = playing ? pauseIcon : playIcon;
-  $('mini-play-icon').innerHTML  = playing ? pauseIcon : playIcon;
+  $('fp-play-icon').innerHTML   = playing ? pauseIcon : playIcon;
+  $('mini-play-icon').innerHTML = playing ? pauseIcon : playIcon;
   miniPlayer.classList.toggle('paused', !playing);
 }
 
 function updateProgress() {
-  const el = currentMediaEl();
-  if (!el || isNaN(el.duration)) return;
-  const pct = (el.currentTime / el.duration) * 100;
-  fpSeek.value  = pct;
+  if (isNaN(audio.duration)) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  fpSeek.value = pct;
   miniBar.style.width = pct + '%';
-  fpCur.textContent   = formatTime(el.currentTime);
-  fpDur.textContent   = formatTime(el.duration);
+  fpCur.textContent  = formatTime(audio.currentTime);
+  fpDur.textContent  = formatTime(audio.duration);
 }
 
 /* ─────────────────────────────────────────
@@ -424,11 +339,8 @@ function navigateTo(page) {
   if (pageEl) pageEl.classList.add('active');
   if (navEl)  navEl.classList.add('active');
 
-  // Lazy render
-  if (page === 'library')  renderLibrary();
-  if (page === 'video')    renderVideoPage();
-  if (page === 'audio')    renderAudioPage();
-  if (page === 'home')     renderHome();
+  if (page === 'songs')  renderSongsPage();
+  if (page === 'home')   renderHome();
 }
 
 /* ─────────────────────────────────────────
@@ -439,8 +351,8 @@ function renderHome() {
   $('greeting').textContent = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   renderQuickGrid();
-  renderHScroll('recently-played',   state.recentlyPlayed.slice(0, 10));
-  renderHScroll('continue-listening', state.recentlyPlayed.filter(i => state.savedPositions[i] > 5).slice(0, 8));
+  renderHScroll('recently-played',    state.recentlyPlayed.slice(0, 10));
+  renderHScroll('continue-listening', state.recentlyPlayed.filter(i => (state.savedPositions[i] || 0) > 5).slice(0, 8));
   renderHScroll('recommended',        getRecommended(8));
   renderHScroll('trending',           [...MEDIA.keys()].sort((a,b) => (state.playCounts[b]||0) - (state.playCounts[a]||0)).slice(0, 10));
 }
@@ -455,6 +367,7 @@ function renderQuickGrid() {
   }
   items.forEach(idx => {
     const m = MEDIA[idx];
+    if (!m) return;
     const div = document.createElement('div');
     div.className = 'quick-card';
     div.innerHTML = `
@@ -470,22 +383,24 @@ function renderHScroll(containerId, indices) {
   const el = $(containerId);
   if (!el) return;
   el.innerHTML = '';
-  if (indices.length === 0) {
-    // skeleton placeholders
+  // Filter out invalid indices
+  const valid = indices.filter(i => i >= 0 && i < MEDIA.length);
+  if (valid.length === 0) {
     el.appendChild(buildSkeletonCards(4));
     return;
   }
-  indices.forEach(idx => el.appendChild(buildCard(idx)));
+  valid.forEach(idx => el.appendChild(buildCard(idx)));
 }
 
 function getRecommended(n) {
-  // Simple recommendation: all indices not recently played, shuffled
   const recent = new Set(state.recentlyPlayed);
   const pool = [...MEDIA.keys()].filter(i => !recent.has(i));
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i+1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
+  // If all songs already played, just return all shuffled
+  if (pool.length === 0) return [...MEDIA.keys()].sort(() => Math.random() - 0.5).slice(0, n);
   return pool.slice(0, n);
 }
 
@@ -493,10 +408,10 @@ function getRecommended(n) {
    SEARCH PAGE
    ───────────────────────────────────────── */
 const CATEGORIES = [
-  { name: 'Audio',  color: '#1e3a5f' },
-  { name: 'Video',  color: '#3d1a5f' },
   { name: 'Favourites', color: '#5f1a2e' },
-  { name: 'Trending',   color: '#1a3d2e' }
+  { name: 'Trending',   color: '#1a3d2e' },
+  { name: 'Most Played', color: '#1e3a5f' },
+  { name: 'All Songs',  color: '#3d1a5f' }
 ];
 
 function renderSearchPage() {
@@ -543,17 +458,25 @@ function doSearch(q) {
     return;
   }
 
-  // Save search
   state.recentSearches = [q, ...state.recentSearches.filter(s => s !== q)].slice(0, 10);
   saveState();
 
   const qLow = q.toLowerCase();
-  const filtered = [...MEDIA.keys()].filter(i => {
-    const m = MEDIA[i];
-    return m.title.toLowerCase().includes(qLow) ||
-           m.artist.toLowerCase().includes(qLow) ||
-           m.type.toLowerCase().includes(qLow);
-  });
+
+  // Special category searches
+  let filtered;
+  if (qLow === 'favourites') {
+    filtered = state.favorites.filter(i => MEDIA[i]);
+  } else if (qLow === 'trending' || qLow === 'most played') {
+    filtered = [...MEDIA.keys()].sort((a,b) => (state.playCounts[b]||0) - (state.playCounts[a]||0));
+  } else if (qLow === 'all songs') {
+    filtered = [...MEDIA.keys()];
+  } else {
+    filtered = [...MEDIA.keys()].filter(i => {
+      const m = MEDIA[i];
+      return m.title.toLowerCase().includes(qLow) || m.artist.toLowerCase().includes(qLow);
+    });
+  }
 
   grid.innerHTML = '';
   results.classList.remove('hidden');
@@ -568,57 +491,12 @@ function doSearch(q) {
 }
 
 /* ─────────────────────────────────────────
-   LIBRARY PAGE
+   SONGS PAGE
    ───────────────────────────────────────── */
-let libFilter = 'all';
-let libSort   = 'recent';
-let libView   = 'grid';
+function renderSongsPage() {
+  const audios = [...MEDIA.keys()];
 
-function renderLibrary() {
-  let indices = [...MEDIA.keys()];
-
-  if (libFilter === 'audio') indices = indices.filter(i => MEDIA[i].type === 'audio');
-  if (libFilter === 'video') indices = indices.filter(i => MEDIA[i].type === 'video');
-
-  if (libSort === 'az')     indices.sort((a,b) => MEDIA[a].title.localeCompare(MEDIA[b].title));
-  if (libSort === 'played') indices.sort((a,b) => {
-    const ai = state.recentlyPlayed.indexOf(a);
-    const bi = state.recentlyPlayed.indexOf(b);
-    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
-  });
-
-  const grid = $('lib-grid');
-  grid.innerHTML = '';
-  grid.className = 'lib-grid' + (libView === 'list' ? ' list-view' : '');
-
-  if (indices.length === 0) {
-    grid.innerHTML = '<p style="color:var(--text3);padding:16px;grid-column:1/-1">Nothing here yet</p>';
-    return;
-  }
-  indices.forEach(idx => grid.appendChild(buildCard(idx)));
-}
-
-/* ─────────────────────────────────────────
-   VIDEO PAGE
-   ───────────────────────────────────────── */
-function renderVideoPage() {
-  const videos = [...MEDIA.keys()].filter(i => MEDIA[i].type === 'video');
-  const recent = state.recentlyPlayed.filter(i => MEDIA[i].type === 'video').slice(0, 6);
-
-  renderHScroll('recent-videos', recent);
-
-  const grid = $('video-grid');
-  grid.innerHTML = '';
-  videos.forEach(idx => grid.appendChild(buildVideoCard(idx)));
-}
-
-/* ─────────────────────────────────────────
-   AUDIO PAGE
-   ───────────────────────────────────────── */
-function renderAudioPage() {
-  const audios = [...MEDIA.keys()].filter(i => MEDIA[i].type === 'audio');
-
-  // All Audio
+  // All Songs
   const all = $('all-tracks');
   all.innerHTML = '';
   audios.forEach(idx => all.appendChild(buildTrackItem(idx)));
@@ -626,18 +504,18 @@ function renderAudioPage() {
   // Favourites
   const favEl = $('fav-tracks');
   favEl.innerHTML = '';
-  const favs = state.favorites.filter(i => MEDIA[i] && MEDIA[i].type === 'audio');
+  const favs = state.favorites.filter(i => MEDIA[i]);
   if (favs.length === 0) {
     favEl.innerHTML = '<p style="color:var(--text3);padding:16px">No favourites yet — tap ♥ on a track</p>';
   } else {
     favs.forEach(idx => favEl.appendChild(buildTrackItem(idx)));
   }
 
-  // Most played
+  // Most Played
   const mostEl = $('most-tracks');
   mostEl.innerHTML = '';
   const sorted = [...audios].sort((a,b) => (state.playCounts[b]||0) - (state.playCounts[a]||0));
-  if (sorted.filter(i => state.playCounts[i]).length === 0) {
+  if (!sorted.some(i => state.playCounts[i])) {
     mostEl.innerHTML = '<p style="color:var(--text3);padding:16px">Play some tracks to see stats</p>';
   } else {
     sorted.forEach(idx => mostEl.appendChild(buildTrackItem(idx)));
@@ -648,7 +526,8 @@ function renderAudioPage() {
   artistGrid.innerHTML = '';
   const artists = [...new Set(audios.map(i => MEDIA[i].artist))];
   artists.forEach(name => {
-    const cover = MEDIA[audios.find(i => MEDIA[i].artist === name)].cover;
+    const firstIdx = audios.find(i => MEDIA[i].artist === name);
+    const cover = MEDIA[firstIdx].cover;
     const div = document.createElement('div');
     div.className = 'artist-card';
     div.innerHTML = `
@@ -684,27 +563,21 @@ function wireEvents() {
   $('mini-prev').addEventListener('click', e => { e.stopPropagation(); playPrev(); });
   $('mini-next').addEventListener('click', e => { e.stopPropagation(); playNext(); });
 
-  // Full player close
+  // Full player
   $('fp-close').addEventListener('click', closeFullPlayer);
-
-  // Full player controls
   $('fp-play').addEventListener('click', togglePlay);
   $('fp-prev').addEventListener('click', playPrev);
   $('fp-next').addEventListener('click', playNext);
-  $('fp-back10').addEventListener('click', () => { const el = currentMediaEl(); if (el) el.currentTime = Math.max(0, el.currentTime - 10); });
-  $('fp-fwd10').addEventListener('click',  () => { const el = currentMediaEl(); if (el) el.currentTime = Math.min(el.duration, el.currentTime + 10); });
 
   // Seek
   fpSeek.addEventListener('input', () => {
-    const el = currentMediaEl();
-    if (el && isFinite(el.duration)) el.currentTime = (fpSeek.value / 100) * el.duration;
+    if (isFinite(audio.duration)) audio.currentTime = (fpSeek.value / 100) * audio.duration;
   });
 
   // Volume
   fpVol.addEventListener('input', () => {
     state.volume = fpVol.value / 100;
-    const el = currentMediaEl();
-    if (el) el.volume = state.volume;
+    audio.volume = state.volume;
     saveState();
   });
 
@@ -729,8 +602,7 @@ function wireEvents() {
     const idx = SPEEDS.indexOf(state.speed);
     state.speed = SPEEDS[(idx + 1) % SPEEDS.length];
     $('fp-speed').textContent = state.speed + '×';
-    const el = currentMediaEl();
-    if (el) el.playbackRate = state.speed;
+    audio.playbackRate = state.speed;
     toast('Speed: ' + state.speed + '×');
   });
 
@@ -739,37 +611,11 @@ function wireEvents() {
     if (state.currentIndex >= 0) toggleFav(state.currentIndex);
   });
 
-  // PiP
-  $('fp-pip').addEventListener('click', async () => {
-    try {
-      if (document.pictureInPictureElement) {
-        await document.exitPictureInPicture();
-      } else {
-        await video.requestPictureInPicture();
-      }
-    } catch(e) { toast('PiP not supported'); }
-  });
-
-  // Fullscreen video
-  $('fp-fullscreen').addEventListener('click', () => {
-    try {
-      const el = $('fp-video-view');
-      if (document.fullscreenElement) document.exitFullscreen();
-      else el.requestFullscreen().catch(() => toast('Fullscreen not supported'));
-    } catch(e) {}
-  });
-
   // Audio events
   audio.addEventListener('timeupdate', updateProgress);
   audio.addEventListener('ended', onEnded);
   audio.addEventListener('play',  () => { state.isPlaying = true;  updatePlayIcons(); });
   audio.addEventListener('pause', () => { state.isPlaying = false; updatePlayIcons(); });
-
-  // Video events
-  video.addEventListener('timeupdate', updateProgress);
-  video.addEventListener('ended', onEnded);
-  video.addEventListener('play',  () => { state.isPlaying = true;  updatePlayIcons(); });
-  video.addEventListener('pause', () => { state.isPlaying = false; updatePlayIcons(); });
 
   // Search
   const searchInput = $('search-input');
@@ -786,50 +632,7 @@ function wireEvents() {
     doSearch('');
   });
 
-  // Video search
-  const videoSearch = $('video-search');
-  videoSearch.addEventListener('input', () => {
-    const q = videoSearch.value.toLowerCase().trim();
-    const grid = $('video-grid');
-    grid.innerHTML = '';
-    const videos = [...MEDIA.keys()].filter(i => {
-      const m = MEDIA[i];
-      return m.type === 'video' && (m.title.toLowerCase().includes(q) || m.artist.toLowerCase().includes(q));
-    });
-    videos.forEach(idx => grid.appendChild(buildVideoCard(idx)));
-  });
-
-  // Library filters
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      libFilter = btn.dataset.filter;
-      renderLibrary();
-    });
-  });
-
-  // Library sort
-  $('lib-sort').addEventListener('change', e => {
-    libSort = e.target.value;
-    renderLibrary();
-  });
-
-  // Library view toggle
-  $('grid-btn').addEventListener('click', () => {
-    libView = 'grid';
-    $('grid-btn').classList.add('active');
-    $('list-btn').classList.remove('active');
-    renderLibrary();
-  });
-  $('list-btn').addEventListener('click', () => {
-    libView = 'list';
-    $('list-btn').classList.add('active');
-    $('grid-btn').classList.remove('active');
-    renderLibrary();
-  });
-
-  // Audio page tabs
+  // Songs page tabs
   document.querySelectorAll('.audio-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.audio-tab').forEach(b => b.classList.remove('active'));
@@ -843,41 +646,37 @@ function wireEvents() {
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
     switch(e.code) {
-      case 'Space': e.preventDefault(); togglePlay(); break;
-      case 'ArrowRight': { const el = currentMediaEl(); if(el) el.currentTime += 10; break; }
-      case 'ArrowLeft':  { const el = currentMediaEl(); if(el) el.currentTime -= 10; break; }
-      case 'ArrowUp':    state.volume = Math.min(1, state.volume + 0.1); if(currentMediaEl()) currentMediaEl().volume = state.volume; break;
-      case 'ArrowDown':  state.volume = Math.max(0, state.volume - 0.1); if(currentMediaEl()) currentMediaEl().volume = state.volume; break;
+      case 'Space':      e.preventDefault(); togglePlay(); break;
+      case 'ArrowRight': audio.currentTime = Math.min(audio.duration, audio.currentTime + 10); break;
+      case 'ArrowLeft':  audio.currentTime = Math.max(0, audio.currentTime - 10); break;
+      case 'ArrowUp':    state.volume = Math.min(1, state.volume + 0.1); audio.volume = state.volume; break;
+      case 'ArrowDown':  state.volume = Math.max(0, state.volume - 0.1); audio.volume = state.volume; break;
       case 'KeyN':       playNext(); break;
       case 'KeyP':       playPrev(); break;
       case 'Escape':     closeFullPlayer(); break;
     }
   });
 
-  // Swipe to close full player
+  // Swipe down to close full player
   let touchStartY = 0;
   fullPlayer.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
   fullPlayer.addEventListener('touchend', e => {
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (dy > 80) closeFullPlayer();
+    if (e.changedTouches[0].clientY - touchStartY > 80) closeFullPlayer();
   }, { passive: true });
 
-  // Visibility change – save position
+  // Save position on hide
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (state.currentIndex >= 0) {
-        const el = currentMediaEl();
-        if (el && !isNaN(el.currentTime)) state.savedPositions[state.currentIndex] = el.currentTime;
-        saveState();
-      }
+    if (document.hidden && state.currentIndex >= 0 && !isNaN(audio.currentTime)) {
+      state.savedPositions[state.currentIndex] = audio.currentTime;
+      saveState();
     }
   });
 }
 
 function onEnded() {
   if (state.repeat === 'one') {
-    const el = currentMediaEl();
-    if (el) { el.currentTime = 0; el.play().catch(()=>{}); }
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
   } else {
     playNext();
   }
@@ -889,7 +688,6 @@ function onEnded() {
 function init() {
   loadState();
 
-  // Splash
   setTimeout(() => {
     $('splash').classList.add('fade-out');
     setTimeout(() => {
@@ -898,14 +696,13 @@ function init() {
       wireEvents();
       renderSearchPage();
       renderHome();
+      renderSongsPage();
 
-      // Set volume
       audio.volume = state.volume;
       fpVol.value  = state.volume * 100;
     }, 500);
   }, 1200);
 
-  // PWA Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
