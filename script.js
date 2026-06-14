@@ -38,10 +38,10 @@ const MEDIA = [
     cover: "./img/Kodak.jpg",
     src: "./mp4/Kodak.mp4"
   },
-  {
+{
     title: "Bandish",
-    artist: "Bandish",
-    type: "Bandish",
+    artist: "Talha",
+    type: "Video",
     cover: "./img/Bandish.jpg",
     src: "./video/Bandish.mp4"
   }
