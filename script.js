@@ -13,9 +13,9 @@ const MEDIA = [
     title: "KODAK",
     artist: "King",
     type: "audio",
-    cover: "./img/kodak.jpg",
-    src: "./mp3/kodak.mp3"
-  }},
+    cover: "./img/Kodak.jpg",
+    src: "./mp3/Kodak.mp3"
+  },
   {
     title: "Talha",
     artist: "Talha Anjum",
@@ -31,12 +31,12 @@ const MEDIA = [
     src: "./audio/song1.mp3"
   },
   // VIDEO examples
-  {
-    title: "Talha Live",
-    artist: "Talha Anjum",
+{
+    title: "KODAK",
+    artist: "King",
     type: "video",
-    cover: "./img/talha.jpg",
-    src: "./video/talha.mp4"
+    cover: "./img/Kodak.jpg",
+    src: "./mp4/Kodak.mp4"
   },
   {
     title: "AUR – Official Video",
