@@ -1,4 +1,3 @@
-
 /* ============================================================
    1911 — script.js  (audio-only build)
    ============================================================ */
@@ -87,6 +86,7 @@ const state = {
   volume: 1,
   speed: 1,
   currentPage: 'home',
+  previousPage: 'home',
   recentlyPlayed: [],
   favorites: [],
   playCounts: {},
@@ -373,6 +373,7 @@ function closeFullPlayer() {
    ───────────────────────────────────────── */
 function navigateTo(page) {
   if (state.currentPage === page) return;
+  state.previousPage = state.currentPage;
   state.currentPage = page;
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -594,6 +595,12 @@ function wireEvents() {
   // Nav buttons
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', () => navigateTo(btn.dataset.page));
+  });
+
+  // Search back button → go to previous page
+  $('search-back-btn').addEventListener('click', () => {
+    const prev = state.previousPage || 'home';
+    navigateTo(prev);
   });
 
   // Mini player → open full player
