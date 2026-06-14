@@ -24,11 +24,11 @@ const MEDIA = [
     src: "./mp3/Bandish.mp3"
   },
   {
-    title: "Song One",
-    artist: "Artist A",
+    title: "Luka Chippi",
+    artist: "Seedhe Maut",
     type: "audio",
-    cover: "./img/song1.jpg",
-    src: "./audio/song1.mp3"
+    cover: "./img/Luka Chippi.jpg",
+    src: "./mp3/Luka Chippi.mp3"
   },
   // VIDEO examples
 {
