@@ -41,7 +41,7 @@ const MEDIA = [
 {
     title: "Bandish",
     artist: "Talha",
-    type: "Video",
+    type: "video",
     cover: "./img/Bandish.jpg",
     src: "./video/Bandish.mp4"
   }
