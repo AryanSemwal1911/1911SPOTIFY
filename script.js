@@ -9,13 +9,13 @@
    ───────────────────────────────────────── */
 const MEDIA = [
   // AUDIO examples
-  {
-    title: "Shikayat",
-    artist: "AUR",
+{
+    title: "KODAK",
+    artist: "King",
     type: "audio",
-    cover: "./img/shikayat.jpg",
-    src: "./audio/shikayat.mp3"
-  },
+    cover: "./img/kodak.jpg",
+    src: "./mp3/kodak.mp3"
+  }},
   {
     title: "Talha",
     artist: "Talha Anjum",
