@@ -29,7 +29,8 @@ const MEDIA = [
     type: "audio",
     cover: "./img/Luka Chippi.jpg",
     src: "./mp3/Luka Chippi.mp3"
-  },
+  ];
+
 
 /* ─────────────────────────────────────────
    STATE
